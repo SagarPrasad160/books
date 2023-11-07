@@ -8,7 +8,6 @@ function Books() {
   useEffect(() => {
     async function fetchBooks() {
       const res = await axios.get("http://localhost:5000/books");
-      console.log(res.data);
       setBooks(res.data);
     }
     try {
@@ -17,6 +16,15 @@ function Books() {
       console.log(error);
     }
   }, []);
+
+  const deleteBook = async (bookId) => {
+    try {
+      await axios.delete("http://localhost:5000/books/" + bookId);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const booksList = books.map((book) => {
     return (
@@ -27,7 +35,7 @@ function Books() {
         <Link to={`/update/${book.id}`}>
           <button>Update</button>
         </Link>
-        <button>Delete</button>
+        <button onClick={() => deleteBook(book.id)}>Delete</button>
         <hr />
       </div>
     );
